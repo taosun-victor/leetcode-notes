@@ -57,12 +57,17 @@ private:
     Trie trie;
     
 public:
+    // here used a trick with '{', since the ASCII code
+    // for '{' is 27, we could use children['{' - 'a']
+    // to find the position
     WordFilter(vector<string> words) {
         for (int i=0; i<words.size(); ++i){
             string w = words[i];
+	    // will be able to include all prefix
             string key = '{' + w;
             trie.insert(key, i);
             for (int j=0; j<w.size(); ++j){
+		// find all suffix one by one
                 key = w[w.size()-j-1] + key;
                 trie.insert(key, i);
             }
