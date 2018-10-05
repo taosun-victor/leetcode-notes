@@ -9,13 +9,11 @@ using namespace std::chrono;
 struct TreeNode {
     int val;
     int index;
-    int minIndex;
     TreeNode *left, *right;
     
-    TreeNode(int v, int i, int minI){
+    TreeNode(int v, int i){
         val = v;
         index = i;
-	minIndex = minI;
         left = NULL;
         right = NULL;
     }        
@@ -23,20 +21,19 @@ struct TreeNode {
 
 TreeNode * insert(TreeNode *& subRoot, int v, int idx, int& mn){
     if (subRoot == NULL){
-        subRoot = new TreeNode(v, idx, idx);
+        subRoot = new TreeNode(v, idx);
     }
     else if (v < subRoot->val){
-        subRoot->minIndex = idx;
+        subRoot->index = idx;
         subRoot->left = insert(subRoot->left, v, idx, mn);
     }
     else if (v > subRoot->val){
-        mn = min(mn, subRoot->minIndex);
+        mn = min(mn, subRoot->index);
 	subRoot->right = insert(subRoot->right, v, idx, mn);
     }
     else{
-        //subRoot->index = idx;
-	mn = min(mn, min(subRoot->minIndex, subRoot->index));
-	subRoot->minIndex = idx;
+	mn = min(mn, subRoot->index);
+	subRoot->index = idx;
     }
     
     return subRoot;
@@ -76,8 +73,8 @@ int main() {
     //vector<int> input({5, 1, 3, 4, 6, 2});
     //vector<int> input({1, 3, 3, 2, 5});
     //vector<int> input({1, 3, 2, 5, 3});
-    vector<int> input({1, 4, 1, 1, 4, 3, 5});
-    //vector<int> input({3, 1, 3, 1, 1, 1});
+    //vector<int> input({1, 4, 1, 1, 4, 3, 5});
+    vector<int> input({3, 1, 3, 1, 1, 1});
     
     auto start = high_resolution_clock::now();
     vector<int> finalPrices = countSmaller(input);
