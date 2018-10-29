@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+
+%\usepackage{pstricks,pst-node}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage{alltt,fullpage,graphics,color,epsfig,amsmath, amssymb,color,verbatim}
+\usepackage{hyperref}
+\usepackage{boxedminipage}
+\usepackage{listings}
+\usepackage{xcolor}
+%\usepackage[skip=2pt]{caption}
+\lstset { %
+    language=C++,
+    %backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+
+%\newcommand{\edgee}[1]{\begin{math}\stackrel{#1}{\longrightarrow}\end{math}}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\setlength\parindent{0pt}
+
+\begin{document}
+\setlength{\parskip}{.1 in}
+
+\begin{center}
+\LARGE
+\textbf{ECE 408 Applied Parallel Programming, Milestone 1}
+\\[0.5ex]
+\normalsize
+\textbf{deaplearners}\\
+\textbf{Yiliang Wang (wang513), Shuchen Zhang (szhan114), Tao Sun (taosun2)}
+\end{center}
+%----------------------------------------------------------------------
+\textbf{Q1} Include a list of all kernels that collectively consume more than 90\% of the program time.
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Kernel}                               & \textbf{Time} & \textbf{Cummulative Time} \\ \hline
+CUDA memcpy HtoD                              & 37.73\%       & 37.73\%                   \\ \hline
+volta\_scudnn\_128x32\_relu\_interior\_nn\_v1 & 21.47\%       & 59.20\%                   \\ \hline
+cudnn::detail::implicit\_convolve\_sgemm      & 21.32\%       & 80.52\%                   \\ \hline
+cudnn::detail::activation\_fw\_4d\_kernel     & 7.45\%        & 87.97\%                   \\ \hline
+volta\_sgemm\_128x128\_tn                     & 6.87\%        & 94.84\%                   \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{Q2} Include a list of all CUDA API calls that collectively consume more than 90\% of the program time.
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Kernel}           & \textbf{Time} & \textbf{Cummulative Time} \\ \hline
+cudaStreamCreateWithFlags & 38.74\%       & 38.74\%                   \\ \hline
+cudaMemGetInfo            & 36.72\%       & 75.46\%                   \\ \hline
+cudaFree                  & 21.46\%       & 96.92                     \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{Q3} Include an explanation of the difference between kernels and API calls.\\
+Kernels are user-defined C functions. When called, kernels are executed multiple times in parallel by a number of different CUDA threads, as opposed to regular C functions executing only once.
+
+The API calls are an interface provided by CUDA to facilitate users familiar with the C programming language to easily write GPU programs. The API calls provide implicit initialization, context management, and module management to ease the device code management.
+
+\textbf{Q4} Show output of rai running MXNet on the CPU.
+\begin{lstlisting}
+*Running /usr/bin/time python m1.1.py
+Loading fashion-mnist data... done
+Loading model... done
+New Inference
+EvalMetric: {'accuracy': 0.8177}
+19.83user 3.97system 0:13.42elapsed 177%CPU (0avgtext+0avgdata 5955540maxresident)k
+0inputs+2856out
+puts (0major+1586517minor)pagefaults 0swaps
+\end{lstlisting}
+
+\textbf{Q5} List program run time on the CPU.
+The program run time on the CPU is 13.42 seconds.
+\begin{lstlisting}
+19.83user 3.97system 0:13.42elapsed 177%CPU (0avgtext+0avgdata 5955540maxresident)k
+0inputs+2856out
+puts (0major+1586517minor)pagefaults 0swaps
+\end{lstlisting}
+
+\textbf{Q6} Show output of rai running MXNet on the GPU.
+\begin{lstlisting}
+Running /usr/bin/time python m1.2.py
+Loading fashion-mnist data... done
+Loading model... done
+New Inference
+EvalMetric: {'accuracy': 0.8177}
+\end{lstlisting}
+ 
+\textbf{Q7} List program run time on the GPU.
+The program run time on the CPU is 4.59 seconds.
+\begin{lstlisting}
+4.37user 2.67system 0:04.59elapsed 153%CPU (0avgtext+0avgdata 2833892maxresident)k
+0inputs+4568outputs (0major+703015minor)pagefaults 0swaps
+\end{lstlisting}
+%------------------------------------------------------------------------
+\end{document}
+
