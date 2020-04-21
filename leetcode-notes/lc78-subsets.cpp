@@ -46,6 +46,36 @@ vector<vector<int>> subsets2(vector<int>& nums) {
     return res;
 }
 
+//*********************************** all permutations of subsets ***********************************
+vector<string> allPermutationsOfSubsets(string set) {
+    // write your solution here
+    int n = set.size();
+    string out;
+    unordered_set<char> visit;
+    vector<string> res;
+    for (int k = 0; k <= n; k++)
+        dfs_all_permutations_of_subsets(set, out, k, visit, res);
+    return res;
+}
+    
+void dfs_all_permutations_of_subsets(string& set, string& out, int k, unordered_set<char>& visit, vector<string>& res){  
+    if (out.size() == k){
+        res.push_back(out);
+        return;
+    }
+    
+    for (int i = 0; i < set.size(); i++){
+        if (visit.count(set[i]))
+            continue;
+        visit.insert(set[i]);
+        out.push_back(set[i]);
+        dfs(set, out, k, visit, res);
+        out.pop_back();
+        visit.erase(set[i]);
+    }
+} 
+
+//*************************************************************************************************
 /*************************************** sol3 ****************************************************/
 void dfs3(vector<int>& nums, int idx, vector<vector<int>>& res){
     if (idx == nums.size()){
