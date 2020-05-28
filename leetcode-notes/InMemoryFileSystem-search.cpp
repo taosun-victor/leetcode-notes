@@ -204,8 +204,17 @@ public:
 int main() {
 	FileSystem fs;
 	
-	// ----- build the tree structure for the file system ----
-	fs.mkdir("/a/b/c");
+	/* ----- build the tree structure for the file system ----
+	                    _______________________a___________            
+	                   /                       |          \
+	         _________b_________________    file8(20)    __k__
+	        /        |      \           \               /     \
+	 file1(10)  node2(5)     c          d           file6(11)  node7(3)
+	                       /  \          \
+	                file3(4) node4(16)   node5(15)
+	*/
+	
+	fs.mkdir("/a/b/c");                    
 	fs.mkdir("/a/b/d");
 	fs.mkdir("/a/k");
 	
@@ -221,7 +230,7 @@ int main() {
     // ---------------Test size filter ----------------	
 	sizeFilter sF(10);
 	vector<string> v = fs.searchTargetFiles(sF);
-	cout << "All files with size no smaller than 10: ";
+	cout << "All files with size >= 10: ";
 	for (string str : v)
 		cout << str << ", ";
 	cout << endl;
