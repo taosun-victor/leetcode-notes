@@ -1,3 +1,41 @@
+/******************************************************************************************************
+*              Design In Memory File System supporting Search Functionalities                         *
+*                                                                                                     *
+*    1. Design a in-memory file system supports basic functionality such as create a new              *
+*       directory (mkdir) and create a new file (addFile).                                            *
+*    2. Implement a function that returns all the Files inside the file system that satisfies         *
+*       a given search requirement (such as "return all files with size >= 10").                      *
+*    3. Imagine the File might have multiple meta-data fields (such as size, file name, create        *
+*       time, last updated time, etc). Design a generic way to search the files with different        *
+*       requirement, such as "return all files with size >= 10", "return all files whose name has     *
+*       a prefix of ...", "return all files with owner name 'John Smith'" ...                         *
+*    4. Design a way to search the files with combined requirements, such as "return all files        *
+*       with size >= 10 AND their names has a prefix of 'file' ".                                     *
+*                                                                                                     *
+*                                                                                                     *
+*    Solutions:                                                                                       *
+*    S1. The in-memory file system is defined as a tree-based structure, with non-leaf nodes as       *
+*        directories and leaf nodes as files. Since both directories and files are nodes of the       *
+*        tree, we could implement a base class "Entry" and let classes "Directory" and "File" to      *
+*        inherit the base class.                                                                      *
+*    S2. Implement a search function to traverse the tree with depth-first-search. When reaching      *
+*        leaf nodes (Files), check if their size satisfies the requirement.                           *
+*    S3. Implement "Filter" classes to support different search requirements. The base class "Filter" *
+*        has a pure virtual method "isValid()". Different filters such as "sizeFilter" and            *
+*        "prefixFilter" could inherit the base class and define their own version of "isValid()". A   *
+*        filter of the corresponding filter could be passed into the search function.                 *
+*    S4. classes "AndFilter" and "OrFilter" are implemented to combine multiple requirements          *
+*        represented as different filters.                                                            *
+*                                                                                                     *
+*                                                                                                     *
+*    Question: For the search() function, we need to traverse the "children" list of "Directory"      *
+*              class. The current implementation is to make "children" field a PUBLIC member of       *
+*              "Directory" class, which might not be good. Is there any better ideas?                 *
+*                                                                                                     *                                                                      
+*******************************************************************************************************/
+
+
+
 #include <iostream>
 #include <unordered_map>
 #include <string>
@@ -153,7 +191,10 @@ private:
         }
         return curr;
     }
-    
+
+	// here we need to traverse the "children" field of a "directory".
+	// currently make "children" filed public in "directory" class
+	// any better ideas?
     void search(Entry* entry, Filter& filter, vector<string>& res){
     	if (entry->isFile()){
     		if (filter.isValid((File*)entry))
@@ -161,9 +202,6 @@ private:
     		return;
 		}
 		
-		// here we need to traverse the "children" field of a "directory".
-		// currently make "children" filed public in "directory" class
-		// any better ideas?
 		for (auto m : ((Directory*)entry)->children)
 			search(m.second, filter, res);
 	}
@@ -206,9 +244,9 @@ int main() {
 	
 	/* ----- build the tree structure for the file system ----
 	                    _______________________a___________            
-	                   /                       |          \
-	         _________b_________________    file8(20)    __k__
-	        /        |      \           \               /     \
+	                   /                       |           \
+	         _________b_________________    file8(20)     __k__
+	        /        |      \           \                /     \
 	 file1(10)  node2(5)     c          d           file6(11)  node7(3)
 	                       /  \          \
 	                file3(4) node4(16)   node5(15)
@@ -235,7 +273,7 @@ int main() {
 		cout << str << ", ";
 	cout << endl;
 	
-	// --------------- Test name filter ------------------
+	// --------------- Test prefix filter ------------------
 	prefixFilter pF("file");
 	v = fs.searchTargetFiles(pF);
 	cout << "All files whose name has prefix of 'file': ";
