@@ -5,34 +5,35 @@
 
 using namespace std;
 
-void reverse(string& input, int left, int right){
-    while(left < right)
-      swap(input[left++], input[right--]);
+string merge(string s1, string s2){
+	string res = "";
+	int i = 0, j = 0;
+	while(i < s1.size() && j < s2.size()){
+		if (s1[i] < s2[j])
+			res.push_back(s1[i++]);
+		else
+			res.push_back(s2[j++]);
+	}
+	while(i < s1.size())
+		res.push_back(s1[i++]);
+	while(j < s2.size())
+		res.push_back(s2[j++]);
+	//cout << res << endl;
+	return res;
 }
 
-void convert(string& array, int left, int right){
-    if (right - left <= 1)
-      	return;
-
-    int len = right - left + 1;
-    int mid = left + len / 2;
-   	int leftMid = left + len / 4;
-    int rightMid = left + len * 3 / 4;
-
+string mergeSort(string array, int left, int right){
+	if (left == right){
+		return string(1, array[left]);
+	}
 	
-   	convert(array, left, left + 2 * (leftMid - left) - 1);   	
-    convert(array, left + 2 * (leftMid - left), right);
-
-   	reverse(array, leftMid, mid - 1);
-   	reverse(array, mid, rightMid - 1);
-	reverse(array, leftMid, rightMid - 1);   	
+	int mid = left + (right - left) / 2;	
+	
+	return merge(mergeSort(array, left, mid), mergeSort(array, mid + 1, right));
 }
 
-string reorder(string array) {
-    if (array.empty()) return array;
-    int right = (array.size() % 2 == 0 ? array.size() - 1 : array.size() - 2);
-    convert(array, 0, right);
-    return array;
+string reorder(string s){
+	return mergeSort(s, 0, s.size() - 1);
 }
 
 int main() {
