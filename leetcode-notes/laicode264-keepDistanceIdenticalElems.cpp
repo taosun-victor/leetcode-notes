@@ -32,8 +32,8 @@ void keepDist2(int k, int idx, vector<int>& out, vector<vector<int>>& res){
 		return;
 	}
 	
-	for (int i = 0; i < out.size(); i++){
-		if (out[i] == 0 && i + idx + 1 < out.size() && out[i + idx + 1] == 0){
+	for (int i = 0; i + idx + 1 < out.size(); i++){
+		if (out[i] == 0 && out[i + idx + 1] == 0){
 			out[i] = idx;
 			out[i + idx + 1] = idx;
 			keepDist2(k, idx + 1, out, res);

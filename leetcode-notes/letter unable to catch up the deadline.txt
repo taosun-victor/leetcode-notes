@@ -1,0 +1,13 @@
+Dear manager:
+
+I am reaching out because, unfortunately, it is highly possible that I could not submit the [xxx feature] I am working on before the deadline, which is coming 3 days after today. It is my responsibility to fully understand the project and propose how long it will take. I apologize to underestimate the technical complexity.
+
+During developing the feature I met with some specific corner cases which I did not consider. Originally I was proposing to implement [xxx techniques] for the feature. However, this will not handle those corner cases properly. By looking into the details, I realized I have to develop [xxx other implementations] as a complement for the entire feature to work. But this needs more time.
+
+May I ask to extend the deadline for 3 more days? I understand by asking extension I have put the whole project in a difficult situation. But I promise to accomplish my feature if the extension is approved.
+
+Again I feel deeply sorry for underestimating the complexity. I will plan my work more carefully in the future to avoid this kind of situations. 
+
+Thanks for your understanding.
+
+Tao Sun
