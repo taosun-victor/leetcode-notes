@@ -18,7 +18,8 @@ public:
 	}
 };
 
-
+// return the root node of the whole subtree after deleting all one-child nodes
+// this way of implementation is not clear in semantics
 TreeNode* deleteHalf(TreeNode* root){
 	if (root == NULL)
 		return NULL;
@@ -33,6 +34,26 @@ TreeNode* deleteHalf(TreeNode* root){
 		return root->right;
 		
 	// both children are null, or both are not null
+	return root;
+}
+
+
+TreeNode* deleteHalf2(TreeNode* root){
+	if (root == NULL)
+		return NULL;
+
+	TreeNode* Left = deleteHalf(root->left);
+	TreeNode* Right = deleteHalf(root->right);
+
+	// one child null, the other not null
+	if (Left && !Right)
+		return Left;
+	if (!Left && Right)
+		return Right;
+		
+	// both children are null, or both are not null
+	root->left = Left;
+	root->right = Right;
 	return root;
 }
 
@@ -62,7 +83,7 @@ int main(){
 	inOrderPrint(root);
 	cout << endl;
 	
-	root = deleteHalf(root);
+	root = deleteHalf2(root);
 	inOrderPrint(root);
 	
 }
