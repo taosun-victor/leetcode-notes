@@ -3,6 +3,18 @@
 
 using namespace std;
 
+/*
+0-1 knapsack problem:
+there is a knapsack with weight capacity as W 
+(i.e. the total weights of all contained items should be <= W)
+
+there are several items with each item's weight as of weight[i] and value as of value[i]
+
+select items to put into the kanpsack, such that the total weight of all items <= W, 
+and the total value of all items is maximized
+*/
+
+
 int knapsack(vector<int>& weight, vector<int>& value, int W){
 	/* dp[i][j] represents the max total value when dealing first i items with total weight <= j
 
